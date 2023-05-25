@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--对指定文件目录开启注解扫描-->
+    <context:component-scan base-package="com">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--导入jdbc配置文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- 配置用于创建SqlSessionFactory的工厂bean -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 设置MyBatis配置文件的路径（可以不设置） -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 设置数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 设置类型别名所对应的包 -->
+        <property name="typeAliasesPackage" value="com.atguigu.crowd.entity"/>
+        <!--
+        设置映射文件的路径
+        若映射文件所在路径和mapper接口所在路径一致，则不需要设置
+        -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+
+        <!-- 配置 MyBatis 的插件 -->
+        <property name="plugins">
+            <array>
+                <!-- 配置 PageHelper -->
+                <bean class="com.github.pagehelper.PageHelper">
+                    <!-- 配置相关属性 -->
+                    <property name="properties">
+                        <props>
+                            <!-- 配置数据库方言，告诉 PageHelper 当前使用的具体数据库，-->
+                            <!-- 让 PageHelper 可以根据当前数据库生成对应的分页 SQL 语句 -->
+                            <prop key="dialect">mysql</prop>
+                            <!-- 配置页码的合理化修正 -->
+                            <!-- 让 PageHelper 自动把浏览器传来的 PageNum 修正到 0~总页数范围 -->
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+    <!--
+        配置mapper接口的扫描配置
+        由mybatis-spring提供，可以将指定包下所有的mapper接口创建动态代理
+        并将这些动态代理作为IOC容器的bean管理
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.atguigu.crowd.mapper"/>
+    </bean>
+</beans>
