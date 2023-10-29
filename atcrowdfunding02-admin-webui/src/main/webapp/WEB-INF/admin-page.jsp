@@ -46,7 +46,7 @@
         var pageNum = pageIndex + 1;
 
         // 跳转页面
-        window.location.href = "admin/get/page.html?pageNum=" + pageNum + "&keyword=${param.keyword}";
+        window.location.href = "admin/get/page.html?pageNum=" + pageNum + "&keyWord=${param.keyWord}";
 
         // 由于每一个页码按钮都是超链接，所以在这个函数最后取消超链接的默认行为
         return false;
@@ -116,14 +116,15 @@
                                         <td>${admin.userName }</td>
                                         <td>${admin.email }</td>
                                         <td>
-                                            <button type="button" class="btn btn-success btn-xs">
+                                            <a href="assign/to/assign/role/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyWord=${param.keyWord}"
+                                               class="btn btn-success btn-xs">
                                                 <i class=" glyphicon glyphicon-check"></i>
-                                            </button>
-                                            <a href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}"
+                                            </a>
+                                            <a href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyWord=${param.keyWord}"
                                                class="btn btn-primary btn-xs">
                                                 <i class=" glyphicon glyphicon-pencil"></i>
                                             </a>
-                                            <a href="delete/admin.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}"
+                                            <a href="delete/admin.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyWord=${param.keyWord}"
                                                class="btn btn-danger btn-xs">
                                                 <i class=" glyphicon glyphicon-remove"></i>
                                             </a>

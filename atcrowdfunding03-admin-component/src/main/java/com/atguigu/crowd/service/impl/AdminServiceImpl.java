@@ -13,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +28,8 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper mapper;
+    @Autowired
+    private PasswordEncoder pe;
 
     @Override
     public void delAdmain(Integer id) {
@@ -87,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         String format = sd.format(date);
         admin.setCreateTime(format);
-        admin.setUserPswd(CrowdUtil.md5(admin.getUserPswd()));
+        admin.setUserPswd(pe.encode(admin.getUserPswd()));
         try {
             mapper.insert(admin);
         } catch (Exception e) {
@@ -116,5 +119,21 @@ public class AdminServiceImpl implements AdminService {
         PageHelper.startPage(pageNum, pageSize);
         List<Admin> admins = mapper.selectAdminPage(keyword);
         return new PageInfo<>(admins);
+    }
+
+    @Override
+    public Admin getAdminByLoginAcct(String loginAcct){
+        AdminExample example = new AdminExample();
+        example.createCriteria().andLoginAcctEqualTo(loginAcct);
+        List<Admin> admins = mapper.selectByExample(example);
+        return admins.get(0);
+    }
+
+    @Override
+    public void saveRelationship(Integer adminId, List<Integer> list) {
+        //为了简化操作，我们直接根据id将旧数据删除再插入新数据
+        mapper.deleteRelationship(adminId);
+        if (list != null && list.size() > 0)
+            mapper.saveRelationship(adminId, list);
     }
 }

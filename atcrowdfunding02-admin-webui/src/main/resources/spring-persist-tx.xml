@@ -38,4 +38,6 @@
         <aop:advisor advice-ref="txadvice" pointcut-ref="pt"/>
     </aop:config>
 
+    <bean id="pe" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
 </beans>

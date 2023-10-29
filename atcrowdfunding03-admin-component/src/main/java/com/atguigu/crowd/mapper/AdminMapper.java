@@ -31,4 +31,10 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     List<Admin> selectAdminPage(String keyWord);
+
+    void deleteRelationship(Integer adminId);
+
+    void saveRelationship(@Param("adminId") Integer adminId, @Param("list") List<Integer> list);
+
+    int bachInsert(List<Admin> list);
 }

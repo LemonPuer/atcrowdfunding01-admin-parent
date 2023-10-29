@@ -22,6 +22,7 @@
                 <div class="panel-body">
                     <form action="update/admin.html" method="post" role="form">
                         <input type="hidden" name="pageNum" value="${pageNum}">
+                        <input type="hidden" name="keyWord" value="${keyWord}">
                         <input type="hidden" name="id" value="${admin.id}">
                         <div class="form-group">
                             <label for="exampleInputPassword1">登录账号</label>

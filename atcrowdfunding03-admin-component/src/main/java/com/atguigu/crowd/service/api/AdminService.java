@@ -23,4 +23,8 @@ public interface AdminService {
     List<Admin> getAll();
     //得到页面信息用于分页
     PageInfo<Admin> getPageInfo(String keyword, Integer pageNum, Integer pageSize);
+
+    void saveRelationship(Integer adminId, List<Integer> list);
+
+    Admin getAdminByLoginAcct(String loginAcct);
 }
