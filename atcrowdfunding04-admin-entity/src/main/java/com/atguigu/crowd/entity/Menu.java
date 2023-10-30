@@ -14,7 +14,9 @@ public class Menu {
 
     private String icon;
 
-    private boolean open=true;
+    private List<Menu> children = new ArrayList<>();
+
+    private boolean open = true;
 
     public boolean isOpen() {
         return open;
@@ -31,8 +33,6 @@ public class Menu {
     public void setChildren(List<Menu> children) {
         this.children = children;
     }
-
-    private List<Menu> children=new ArrayList<>();
 
     public Integer getId() {
         return id;

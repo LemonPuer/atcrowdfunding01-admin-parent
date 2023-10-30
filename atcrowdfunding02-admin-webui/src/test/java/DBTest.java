@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,6 +48,14 @@ public class DBTest {
     private RoleMapper rm;
     @Autowired
     private AuthService aus;
+    @Autowired
+    private PasswordEncoder pe;
+
+    @Test
+    public void test7() {
+        String encode = pe.encode("123456");
+        System.out.printf("%s,长度为：%d", encode, encode.length());
+    }
 
     @Test
     public void test1() throws SQLException {
@@ -60,9 +69,10 @@ public class DBTest {
 
     @Test
     public void test3() {
-        //日志类
+        // 日志类
         Logger logger = LoggerFactory.getLogger(DBTest.class);
         logger.info(CrowdUtil.md5("123456"));
+        System.out.println(adminService.getAll());
     }
 
     @Test
@@ -91,8 +101,8 @@ public class DBTest {
     public void test() {
         ArrayList<Admin> admins = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            if(i==5){
-                admins.add(new Admin(null,"acct" +50,null,null,null,null));
+            if (i == 5) {
+                admins.add(new Admin(null, "acct" + 50, null, null, null, null));
             }
             admins.add(new Admin(null, "acct" + i, "pswd" + i, "uname" + i, "email" + i, null));
         }

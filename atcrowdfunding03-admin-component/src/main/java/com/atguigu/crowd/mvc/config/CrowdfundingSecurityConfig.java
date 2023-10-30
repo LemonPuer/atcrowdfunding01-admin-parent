@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-//启用全局方法权限管理功能
+// 启用全局方法权限管理功能
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CrowdfundingSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -30,7 +30,7 @@ public class CrowdfundingSecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder pe;
 
     @Bean
-    public BCryptPasswordEncoder getPasswordEncoder(){
+    public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -51,7 +51,7 @@ public class CrowdfundingSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/admin/to/login/page.html")
                 .permitAll()
-                //过往的控制器方法不再使用
+                // 过往的控制器方法不再使用
                 .loginProcessingUrl("/security/do/login.html")
                 .permitAll()
                 .usernameParameter("loginAcct")
